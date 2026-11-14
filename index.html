@@ -1,0 +1,1480 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="description" content="测测你和对象是哪个版本的噜噜噜妹——情侣日常趣味人格测试" />
+  <title>测测你和对象是哪个版本的噜噜噜妹</title>
+  <style>
+    :root {
+      --cream: #FFF9E6;
+      --yellow: #FFC857;
+      --orange: #F4A261;
+      --peach: #FFD1DC;
+      --lavender: #E2D5F5;
+      --sage: #C8E6C9;
+      --warm-white: #FFFCF7;
+      --brown: #4E342E;
+      --brown-light: #7D5A50;
+      --shadow: 0 8px 24px rgba(78, 52, 46, 0.10);
+      --shadow-sm: 0 4px 12px rgba(78, 52, 46, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      min-height: 100vh;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: var(--cream);
+      color: var(--brown);
+      overflow-x: hidden;
+    }
+
+    #app {
+      max-width: 480px;
+      margin: 0 auto;
+      min-height: 100vh;
+      padding: 24px 20px 48px;
+      position: relative;
+    }
+
+    .screen {
+      display: none;
+      animation: fadeIn 0.45s ease both;
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* 装饰 */
+    .deco {
+      position: fixed;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.35;
+    }
+
+    .deco.orange {
+      top: -40px;
+      right: -40px;
+      width: 160px;
+      height: 160px;
+      background: radial-gradient(circle, var(--orange) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .deco.peach {
+      bottom: 60px;
+      left: -50px;
+      width: 140px;
+      height: 140px;
+      background: radial-gradient(circle, var(--peach) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    /* 首页 */
+    .home-hero {
+      text-align: center;
+      margin-top: 12px;
+    }
+
+    .home-hero svg {
+      max-width: 320px;
+      width: 100%;
+      height: auto;
+      filter: drop-shadow(0 12px 24px rgba(78, 52, 46, 0.12));
+    }
+
+    .title {
+      font-size: 28px;
+      font-weight: 800;
+      line-height: 1.25;
+      margin: 22px 0 10px;
+      letter-spacing: -0.5px;
+    }
+
+    .subtitle {
+      font-size: 16px;
+      color: var(--brown-light);
+      line-height: 1.5;
+      margin-bottom: 22px;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 28px;
+    }
+
+    .tag {
+      font-size: 13px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: var(--warm-white);
+      color: var(--brown-light);
+      box-shadow: var(--shadow-sm);
+      border: 1px solid rgba(244, 162, 97, 0.15);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 16px 24px;
+      border: none;
+      border-radius: 18px;
+      font-size: 17px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.12s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+      box-shadow: var(--shadow);
+    }
+
+    .btn:active {
+      transform: scale(0.97);
+    }
+
+    .btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--yellow) 0%, var(--orange) 100%);
+      color: #fff;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+    }
+
+    .btn-secondary {
+      background: var(--warm-white);
+      color: var(--brown);
+      border: 1px solid rgba(78, 52, 46, 0.12);
+    }
+
+    .hint {
+      text-align: center;
+      font-size: 13px;
+      color: var(--brown-light);
+      margin-top: 16px;
+      line-height: 1.5;
+    }
+
+    .disclaimer {
+      text-align: center;
+      font-size: 11px;
+      color: #9E9E9E;
+      margin-top: 36px;
+      line-height: 1.5;
+    }
+
+    /* 答题页 */
+    .quiz-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .quiz-back {
+      font-size: 14px;
+      color: var(--brown-light);
+      background: transparent;
+      border: none;
+      padding: 6px 0;
+      cursor: pointer;
+    }
+
+    .quiz-count {
+      font-size: 14px;
+      color: var(--brown-light);
+      font-weight: 600;
+    }
+
+    .progress-wrap {
+      height: 10px;
+      background: rgba(244, 162, 97, 0.15);
+      border-radius: 999px;
+      overflow: hidden;
+      margin-bottom: 28px;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--yellow), var(--orange));
+      border-radius: 999px;
+      transition: width 0.35s ease;
+    }
+
+    .question-card {
+      background: var(--warm-white);
+      border-radius: 26px;
+      padding: 24px 22px 28px;
+      box-shadow: var(--shadow);
+      margin-bottom: 18px;
+    }
+
+    .question-text {
+      font-size: 19px;
+      font-weight: 700;
+      line-height: 1.5;
+      margin: 0 0 22px;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .option {
+      position: relative;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 16px 18px;
+      border-radius: 18px;
+      background: #FFF;
+      border: 2px solid transparent;
+      box-shadow: var(--shadow-sm);
+      cursor: pointer;
+      transition: border-color 0.15s ease, background 0.15s ease, transform 0.1s ease;
+    }
+
+    .option:active {
+      transform: scale(0.98);
+    }
+
+    .option:hover {
+      border-color: rgba(244, 162, 97, 0.35);
+    }
+
+    .option.selected {
+      border-color: var(--orange);
+      background: rgba(255, 200, 87, 0.12);
+    }
+
+    .option-marker {
+      flex-shrink: 0;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: rgba(244, 162, 97, 0.15);
+      color: var(--brown);
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 1px;
+    }
+
+    .option.selected .option-marker {
+      background: var(--orange);
+      color: #fff;
+    }
+
+    .option-text {
+      font-size: 15px;
+      line-height: 1.55;
+      color: var(--brown);
+    }
+
+    .quiz-nav {
+      display: flex;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    /* 加载页 */
+    .loading-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 70vh;
+      text-align: center;
+    }
+
+    .loading-box svg {
+      width: 180px;
+      height: 180px;
+      animation: bounce 1.6s ease-in-out infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-14px); }
+    }
+
+    .loading-text {
+      margin-top: 24px;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--brown);
+    }
+
+    .loading-dots::after {
+      content: "";
+      animation: dots 1.4s steps(4, end) infinite;
+    }
+
+    @keyframes dots {
+      0% { content: ""; }
+      25% { content: "."; }
+      50% { content: ".."; }
+      75% { content: "..."; }
+    }
+
+    /* 结果页 */
+    .result-card {
+      background: var(--warm-white);
+      border-radius: 30px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      margin-bottom: 18px;
+    }
+
+    .result-visual {
+      background: linear-gradient(180deg, rgba(255, 209, 220, 0.35) 0%, rgba(255, 249, 230, 0.6) 100%);
+      padding: 24px 20px 10px;
+      text-align: center;
+      position: relative;
+    }
+
+    .result-visual svg {
+      width: 100%;
+      max-width: 340px;
+      height: auto;
+      filter: drop-shadow(0 10px 20px rgba(78, 52, 46, 0.1));
+    }
+
+    .result-body {
+      padding: 22px 24px 28px;
+    }
+
+    .result-type {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--orange);
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+    }
+
+    .result-title {
+      font-size: 24px;
+      font-weight: 800;
+      line-height: 1.3;
+      margin: 0 0 12px;
+    }
+
+    .result-keyword {
+      display: inline-block;
+      font-size: 14px;
+      color: var(--brown-light);
+      background: rgba(244, 162, 97, 0.1);
+      padding: 8px 14px;
+      border-radius: 999px;
+      margin-bottom: 18px;
+    }
+
+    .result-section {
+      margin-bottom: 16px;
+    }
+
+    .result-section h4 {
+      font-size: 13px;
+      color: var(--brown-light);
+      margin: 0 0 6px;
+      font-weight: 600;
+    }
+
+    .result-section p {
+      font-size: 15px;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    .result-share-line {
+      background: rgba(255, 200, 87, 0.15);
+      border-radius: 16px;
+      padding: 16px;
+      margin: 20px 0 8px;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--brown);
+      text-align: center;
+      border: 1px dashed rgba(244, 162, 97, 0.35);
+    }
+
+    .result-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 90px;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--brown);
+      color: #fff;
+      padding: 12px 22px;
+      border-radius: 999px;
+      font-size: 14px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+      z-index: 100;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    @media (min-width: 600px) {
+      #app {
+        padding-top: 40px;
+      }
+      .title {
+        font-size: 32px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="deco orange"></div>
+  <div class="deco peach"></div>
+
+  <div id="app">
+    <!-- 首页 -->
+    <section id="home" class="screen active">
+      <div class="home-hero" id="homeHero"></div>
+      <h1 class="title">测测你和对象是哪个版本的噜噜噜妹</h1>
+      <p class="subtitle">看看你们是嘴硬搭子、黏人挂件，还是边吵边投喂的神奇组合</p>
+      <div class="tags">
+        <span class="tag">情侣日常｜每道题都像你们的聊天记录</span>
+        <span class="tag">反差人格｜测出你隐藏的噜噜属性</span>
+        <span class="tag">双人互动｜看看你和对象是不是同款</span>
+        <span class="tag">结果分享｜一键发给对象对照答案</span>
+      </div>
+      <button class="btn btn-primary" id="startBtn">开始测试 →</button>
+      <p class="hint">建议和对象一起测，看看你们到底是不是同一款噜噜噜妹。</p>
+      <p class="disclaimer">趣味测试仅供娱乐，结果不代表真实人格。</p>
+    </section>
+
+    <!-- 答题页 -->
+    <section id="quiz" class="screen">
+      <div class="quiz-header">
+        <button class="quiz-back" id="prevBtn">← 上一题</button>
+        <span class="quiz-count" id="quizCount">1 / 32</span>
+      </div>
+      <div class="progress-wrap">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+      <div class="question-card">
+        <h2 class="question-text" id="questionText">题目加载中…</h2>
+        <div class="options" id="optionsBox"></div>
+      </div>
+      <div class="quiz-nav">
+        <button class="btn btn-secondary" id="nextBtn" disabled>下一题</button>
+      </div>
+    </section>
+
+    <!-- 加载页 -->
+    <section id="loading" class="screen">
+      <div class="loading-box" id="loadingBox"></div>
+    </section>
+
+    <!-- 结果页 -->
+    <section id="result" class="screen">
+      <div class="result-card" id="resultCard"></div>
+      <div class="result-actions">
+        <button class="btn btn-secondary" id="copyBtn">复制结果文案</button>
+        <button class="btn btn-primary" id="shareBtn">分享给对象</button>
+        <button class="btn btn-secondary" id="restartBtn">重新测试</button>
+      </div>
+      <p class="disclaimer">趣味测试仅供娱乐，结果不代表真实人格。</p>
+    </section>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    /* =========================================================
+       数据层：10 种基础结果 + 32 道题 + 组合结果映射
+       ========================================================= */
+
+    const RESULT_TYPES = {
+      boss: {
+        label: "霸道总裁",
+        keyword: "嘴上安排一切，实际最先心软",
+        desc: "喜欢替对象做决定，约会路线、吃什么、几点出门都想安排好，但只要对象撒个娇，立刻失去原则。",
+        scene: "约会前一天就把路线、餐厅、出门时间列成清单，甚至连备选方案都准备好了。",
+        contrast: "前一秒还在冷静安排全场，下一秒对象一撒娇，原则立刻全线崩盘。",
+        advice: "当 TA 在规划时，给一句「都听你的」，TA 会开心一整天。",
+        daily: "一个发号施令，一个乖乖跟随；但发号施令的人，往往最先心软。",
+        inEyes: "一个说到做到、让人安心的存在",
+        pattern: "一个人负责规划，一个人负责被宠",
+        shareLine: "我把未来都安排好了，只差你一句好。"
+      },
+      sunny: {
+        label: "阳光开朗",
+        keyword: "自带小太阳，负责把普通日子过得像节日",
+        desc: "很会制造气氛，喜欢分享有趣的事，吵架后通常也是最先恢复快乐的那一个。",
+        scene: "游乐园、海边、夜市，任何能笑出声的地方，都是你们的约会圣地。",
+        contrast: "看起来没心没肺，其实是第一个察觉对象情绪变化的人。",
+        advice: "陪 TA 一起疯就好，偶尔也可以让 TA 安静地陪你说说话。",
+        daily: "日子普普通通，但你们总有办法把它过成节日。",
+        inEyes: "身边最会制造快乐的人",
+        pattern: "快乐会传染，在一起每天都是节日",
+        shareLine: "今天的不开心，我来帮你吃掉。"
+      },
+      proud: {
+        label: "臭屁自恋",
+        keyword: "三句话里两句夸自己，剩下一句等别人夸",
+        desc: "非常清楚自己可爱在哪里，喜欢展示自己的优点，但被对象夸奖后又会故作淡定。",
+        scene: "出门前一定要照镜子确认今天也很可爱，约会中时不时会 cue 一句「我是不是很棒」。",
+        contrast: "嘴上等别人夸，心里其实早就把对象的夸奖截图收藏。",
+        advice: "多夸夸 TA，TA 会装作淡定，但尾巴已经翘到天上。",
+        daily: "互吹日常，彼此的优点都要拿出来反复品鉴。",
+        inEyes: "明明很可爱，还要假装不在意",
+        pattern: "互相捧场，越夸越可爱",
+        shareLine: "我知道我很可爱，但你夸我我会更可爱。"
+      },
+      clingy: {
+        label: "黏人挂件",
+        keyword: "嘴上说随便，身体已经自动靠近",
+        desc: "喜欢分享日常、确认对象的位置、一起吃饭和一起出门，表面独立，实际希望一直待在对象旁边。",
+        scene: "最理想的状态是两个人待在同一间屋子里，各做各的，但偶尔抬头确认对方还在。",
+        contrast: "嘴上说「你忙你的」，身体已经自动挪到对象旁边。",
+        advice: "给 TA 一个明确的「我在」信号，TA 就能安心好久。",
+        daily: "表面独立，实际希望 24 小时贴在对象身边。",
+        inEyes: "一个总是想贴贴的小挂件",
+        pattern: "贴贴是最高级的浪漫",
+        shareLine: "你在干嘛？没什么，就是想你了。"
+      },
+      lazy: {
+        label: "养生躺平",
+        keyword: "恋爱可以，走太多路不行",
+        desc: "最理想的约会是一起窝着、点外卖、看剧和分享零食，能够坐着解决的事情绝对不站着解决。",
+        scene: "沙发、外卖、毯子、遥控器，四个人生必需品齐全，就是完美约会。",
+        contrast: "看起来懒得动，但其实很擅长把舒服传染给对象。",
+        advice: "不要突然安排高强度行程，循序渐进地叫 TA 出门成功率更高。",
+        daily: "能坐着解决的事绝不站着，能躺着解决的事绝不坐着。",
+        inEyes: "最懂舒服、最会享受生活的人",
+        pattern: "能坐着不站着，能躺着不坐着",
+        shareLine: "和你在一起，连躺着都很有意义。"
+      },
+      tsundere: {
+        label: "反差傲娇",
+        keyword: "嘴上说“谁稀罕”，行动却是“我给你带了”",
+        desc: "不太会直接表达想念，但会通过买东西、记细节和默默陪伴来表达在乎。",
+        scene: "一边嘴硬说「谁稀罕」，一边已经把对象爱吃的零食买好放桌上。",
+        contrast: "越在乎越不说，但行动早就把真心暴露得一干二净。",
+        advice: "听懂 TA 的反话，给 TA 一个台阶，TA 会偷偷感动。",
+        daily: "嘴上互相嫌弃，手里却互相照顾。",
+        inEyes: "嘴硬但心软的人",
+        pattern: "用反话表达最真的在乎",
+        shareLine: "我才不是特意给你的，只是顺手。"
+      },
+      moody: {
+        label: "情绪气象台",
+        keyword: "表情变化比天气还快",
+        desc: "情绪来得快、去得也快，上一秒还在闹别扭，下一秒可能就想和对象分享一块蛋糕。",
+        scene: "情绪像天气，上一秒还晴天下一秒就多云，但对象递块蛋糕就能转晴。",
+        contrast: "翻脸比翻书快，但哄好也比想象中简单。",
+        advice: "当 TA 情绪起伏时，一块甜品或一个拥抱比道理有用。",
+        daily: "一天之内可以经历春夏秋冬，但好在 TA 的笑容来得也快。",
+        inEyes: "像天气一样让人捉摸不透，但很可爱",
+        pattern: "情绪来得快去得也快，哄哄就好",
+        shareLine: "我现在是阴天，但你的消息是晴天。"
+      },
+      detective: {
+        label: "细节侦探",
+        keyword: "记得每一个小习惯，也发现每一个小变化",
+        desc: "会注意对象的语气、表情、饮料甜度和聊天频率，属于“你自己都没发现，但它已经发现了”的类型。",
+        scene: "能从对象的语气词、表情包、奶茶甜度里读出一场大戏。",
+        contrast: "记得对象随口说的每一句话，却假装自己只是「刚好想起」。",
+        advice: "偶尔主动告诉 TA 你的小心思，别让 TA 一直猜。",
+        daily: "细节控的日常：你自己都没发现的变化，TA 已经默默记在小本本上。",
+        inEyes: "一个比我自己还懂我的人",
+        pattern: "细节里藏着全部的爱",
+        shareLine: "你都没发现的小变化，我全都记得。"
+      },
+      foodie: {
+        label: "美食外交官",
+        keyword: "所有矛盾都可以先吃点东西",
+        desc: "喜欢用美食表达关心，约会地点由胃决定，分享食物就是最高级的示好方式。",
+        scene: "约会路线由胃决定，分享食物是你们最高级的浪漫语言。",
+        contrast: "看起来只关心吃什么，其实每一口都在说「我在乎你」。",
+        advice: "和 TA 一起吃饭，就是给 TA 最好的安慰。",
+        daily: "没什么是一顿好吃的解决不了的，如果有，就两顿。",
+        inEyes: "用美食表达爱的人",
+        pattern: "一起吃好多顿饭，就是最长情的告白",
+        shareLine: "别生气了，我请你吃你最爱的那家。"
+      },
+      manager: {
+        label: "人间小管家",
+        keyword: "嘴上嫌弃，手上照顾",
+        desc: "会提醒对象带伞、充电、吃饭和休息，同时假装自己只是顺便提醒一下。",
+        scene: "包里永远有纸巾、充电宝、雨伞和备用口罩，对象是 TA 的重点保护对象。",
+        contrast: "嘴上嫌弃你麻烦，手上已经把麻烦都处理好了。",
+        advice: "接受 TA 的照顾，也记得偶尔反向照顾 TA 一下。",
+        daily: "一个在唠叨，一个在被照顾；嫌弃是真的，心疼也是真的。",
+        inEyes: "一边唠叨一边把我照顾得很好",
+        pattern: "一个在闹，一个在照顾",
+        shareLine: "伞带了、电充了、饭吃了，想你了。"
+      }
+    };
+
+    const TYPE_ORDER = ["boss", "sunny", "proud", "clingy", "lazy", "tsundere", "moody", "detective", "foodie", "manager"];
+
+    // 32 道题，每题 4 个选项，选项标签已做均衡分布并在渲染时再次打乱
+    const QUESTIONS = [
+      {
+        question: "对象突然说“我想你了”，你第一反应是？",
+        options: [
+          { text: "立刻打开地图，安排今晚见面路线", type: "boss" },
+          { text: "开心得想把这件事告诉全世界", type: "sunny" },
+          { text: "那当然，我这么可爱谁能不想", type: "proud" },
+          { text: "我也想你！你现在到底在哪", type: "clingy" }
+        ]
+      },
+      {
+        question: "周末难得放假，你们最可能怎么安排？",
+        options: [
+          { text: "点好外卖，躺到自然醒", type: "lazy" },
+          { text: "随便，反正我都可以（其实想一起）", type: "tsundere" },
+          { text: "看心情，可能开心也可能不想动", type: "moody" },
+          { text: "提前三天就开始观察天气和餐厅排队情况", type: "detective" }
+        ]
+      },
+      {
+        question: "两个人点外卖时最容易发生什么？",
+        options: [
+          { text: "越加越多，最后点了三人份", type: "foodie" },
+          { text: "有人还没选主食，我已经把餐具准备好了", type: "manager" },
+          { text: "我直接拍板，三分钟内下单", type: "boss" },
+          { text: "能吃就行，开心最重要", type: "sunny" }
+        ]
+      },
+      {
+        question: "对象说“没事”，你会怎么判断？",
+        options: [
+          { text: "没事最好，那我继续忙我的", type: "proud" },
+          { text: "一定有事，我要问到你说出来", type: "clingy" },
+          { text: "没事就继续躺着，等有事再说", type: "lazy" },
+          { text: "没事？那我也没事（其实已经记下了）", type: "detective" }
+        ]
+      },
+      {
+        question: "看到对象换了个新头像，你的反应是？",
+        options: [
+          { text: "怎么不提前跟我说，是不是不爱了", type: "moody" },
+          { text: "放大看细节，顺便研究是不是情侣款", type: "detective" },
+          { text: "头像好看，晚饭加杯奶茶庆祝一下", type: "foodie" },
+          { text: "截图保存，提醒自己下次也换配套风格", type: "manager" }
+        ]
+      },
+      {
+        question: "对象问“你爱不爱我”，你会怎么回答？",
+        options: [
+          { text: "爱，明天的行程我都排好了", type: "boss" },
+          { text: "你猜（心里说了一百遍爱）", type: "tsundere" },
+          { text: "爱你，所以我给你点了你最爱的那家", type: "foodie" },
+          { text: "超爱，不信你可以再问我十遍", type: "clingy" }
+        ]
+      },
+      {
+        question: "一起旅行时，你们谁更像导航？",
+        options: [
+          { text: "跟着感觉走，迷路也是风景", type: "sunny" },
+          { text: "谁规划的谁导，我只负责跟着", type: "lazy" },
+          { text: "默默记住每个路口和好看的店", type: "detective" },
+          { text: "我指的方向一般都不会错", type: "proud" }
+        ]
+      },
+      {
+        question: "对方生病了，你第一反应是？",
+        options: [
+          { text: "量体温、找药、提醒多喝热水", type: "manager" },
+          { text: "又心疼又有点生气怎么不好好照顾自己", type: "moody" },
+          { text: "穿好衣服，我带你去医院", type: "boss" },
+          { text: "先点一碗粥，吃饱了才有力气好", type: "foodie" }
+        ]
+      },
+      {
+        question: "聊天聊到一半没话题时，你会怎么办？",
+        options: [
+          { text: "发一句“你在干嘛”，重新接上线", type: "clingy" },
+          { text: "甩个搞笑视频，把气氛续上", type: "sunny" },
+          { text: "没话题就没话题，我又不无聊", type: "tsundere" },
+          { text: "翻三天前的聊天记录，找可以继续的话题", type: "detective" }
+        ]
+      },
+      {
+        question: "出门前最常发生什么？",
+        options: [
+          { text: "照镜子确认今天也很可爱", type: "proud" },
+          { text: "再坐五分钟，然后又一个五分钟", type: "lazy" },
+          { text: "检查钥匙、伞、充电宝有没有带", type: "manager" },
+          { text: "突然不想去了，但还是会出门", type: "moody" }
+        ]
+      },
+      {
+        question: "两个人吵架后，谁更可能先发消息？",
+        options: [
+          { text: "把刚才的对话复盘三遍，确认自己没说错", type: "detective" },
+          { text: "直接发“晚饭吃啥”，当作和好的信号", type: "boss" },
+          { text: "先发一句“记得吃饭”，顺便结束冷战", type: "manager" },
+          { text: "憋半天，最后发一个委屈表情包", type: "moody" }
+        ]
+      },
+      {
+        question: "对象突然想吃夜宵，你会怎么回应？",
+        options: [
+          { text: "好啊，这正是今天的高光时刻", type: "sunny" },
+          { text: "马上搜附近评分最高的店", type: "foodie" },
+          { text: "你不是说要减肥吗（然后递上外套）", type: "tsundere" },
+          { text: "点外卖吧，出门太麻烦了", type: "lazy" }
+        ]
+      },
+      {
+        question: "对象偷偷给你买了零食，你会？",
+        options: [
+          { text: "这是你想着我的证据，我要收藏起来", type: "clingy" },
+          { text: "品位不错，跟我喜欢的一样", type: "proud" },
+          { text: "观察包装袋，推测你是在哪家店买的", type: "detective" },
+          { text: "下次告诉我，我给你列个愿望清单", type: "boss" }
+        ]
+      },
+      {
+        question: "看电影时你们最像什么状态？",
+        options: [
+          { text: "提前买好奶茶，准时进场", type: "manager" },
+          { text: "前半段笑，后半段莫名其妙想哭", type: "moody" },
+          { text: "看得开心，离场还在讨论剧情", type: "sunny" },
+          { text: "爆米花才是主角，电影配饭", type: "foodie" }
+        ]
+      },
+      {
+        question: "对象说“你决定吧”，你最后会怎么做？",
+        options: [
+          { text: "说随便，但其实已经想好了", type: "tsundere" },
+          { text: "选最省力、最不用出门的方案", type: "lazy" },
+          { text: "选能跟对象黏在一起最久的那个", type: "clingy" },
+          { text: "选我觉得最 impressive 的", type: "proud" }
+        ]
+      },
+      {
+        question: "情侣合照拍废了十几张，你会？",
+        options: [
+          { text: "生气了，不想拍了（等对象来哄）", type: "tsundere" },
+          { text: "我来指挥，三二一再拍一张", type: "boss" },
+          { text: "算了，先吃点东西，吃饱了再拍", type: "foodie" },
+          { text: "有点失落，但对象一哄就好", type: "moody" }
+        ]
+      },
+      {
+        question: "逛超市时你们最容易在哪个区停留？",
+        options: [
+          { text: "日用品区，顺便补 household", type: "manager" },
+          { text: "玩具区，两个人一起挑可爱的", type: "sunny" },
+          { text: "即食区，拿了就能走", type: "lazy" },
+          { text: "零食区，我挑的都好吃", type: "proud" }
+        ]
+      },
+      {
+        question: "对象已读不回十分钟，你会怎么办？",
+        options: [
+          { text: "再发一条，确认手机没坏", type: "clingy" },
+          { text: "已读不回？那我也不回了", type: "tsundere" },
+          { text: "翻看上一句，看是不是我说错话了", type: "detective" },
+          { text: "觉得对方在忙，不会再发", type: "sunny" }
+        ]
+      },
+      {
+        question: "对方心情不好时，你会怎么安慰？",
+        options: [
+          { text: "直接说“走，我带你去散心”", type: "boss" },
+          { text: "陪他一起安静，情绪同步", type: "moody" },
+          { text: "讲个笑话，先把气氛拉回来", type: "sunny" },
+          { text: "给他递个靠枕，一起瘫着", type: "lazy" }
+        ]
+      },
+      {
+        question: "看到好玩的东西，你第一反应是？",
+        options: [
+          { text: "我比这个还可爱", type: "proud" },
+          { text: "马上拍照发给对象", type: "clingy" },
+          { text: "先收藏，等合适的时候买给对象", type: "manager" },
+          { text: "还行吧（然后偷偷转发）", type: "tsundere" }
+        ]
+      },
+      {
+        question: "两个人一起做饭，通常变成？",
+        options: [
+          { text: "研究新菜谱，做出一桌菜", type: "foodie" },
+          { text: "我负责收拾，你负责别烫到", type: "manager" },
+          { text: "我主厨，你打下手", type: "boss" },
+          { text: "说好一起做，最后还不是我来（得意）", type: "tsundere" }
+        ]
+      },
+      {
+        question: "对象夸你今天很好看，你会？",
+        options: [
+          { text: "突然眼眶一热，不知道怎么回应", type: "moody" },
+          { text: "你也是！我们一起好看", type: "sunny" },
+          { text: "那你要多看我几眼", type: "clingy" },
+          { text: "那当然，我每天都好看", type: "proud" }
+        ]
+      },
+      {
+        question: "你们计划了很久的旅行，临出发前一天？",
+        options: [
+          { text: "把行程表、酒店、车票再核对一遍", type: "detective" },
+          { text: "行李还没收，但相信来得及", type: "lazy" },
+          { text: "先查目的地有什么必吃", type: "foodie" },
+          { text: "检查护照、充电线、常用药", type: "manager" }
+        ]
+      },
+      {
+        question: "对象说“今天好累”，你会？",
+        options: [
+          { text: "那我安排你今天早点休息", type: "boss" },
+          { text: "谁让你昨天熬夜（然后放好热水）", type: "tsundere" },
+          { text: "我也累，我们一起躺平", type: "moody" },
+          { text: "累就歇着，我给你讲个好玩的", type: "sunny" }
+        ]
+      },
+      {
+        question: "对象突然换了头像，你会？",
+        options: [
+          { text: "想跟我用情侣款对吧", type: "clingy" },
+          { text: "没我头像可爱", type: "proud" },
+          { text: "分析新头像颜色、风格、含义", type: "detective" },
+          { text: "换就换吧，不影响我躺", type: "lazy" }
+        ]
+      },
+      {
+        question: "纪念日你们更可能怎么过？",
+        options: [
+          { text: "提前订好餐厅和礼物", type: "manager" },
+          { text: "安排一整天的行程", type: "boss" },
+          { text: "蛋糕是底线，其他随便", type: "foodie" },
+          { text: "我没准备哦（其实准备了好久）", type: "tsundere" }
+        ]
+      },
+      {
+        question: "一起拍照时，谁更容易反复重拍？",
+        options: [
+          { text: "我，我想抓最自然的笑容", type: "sunny" },
+          { text: "看状态，状态不对一张都不想拍", type: "moody" },
+          { text: "我，想留下最好看的合影", type: "clingy" },
+          { text: "我，我不能接受不好看的自己", type: "proud" }
+        ]
+      },
+      {
+        question: "对象送了你一个完全不实用的礼物，你会？",
+        options: [
+          { text: "研究包装和购买路径，想知道他在想什么", type: "detective" },
+          { text: "先放着，反正收礼物就是开心", type: "lazy" },
+          { text: "登记进“小礼物本”，下次回礼", type: "manager" },
+          { text: "看起来不能吃，但心意我收了", type: "foodie" }
+        ]
+      },
+      {
+        question: "对方发了一个“？”，你的反应是？",
+        options: [
+          { text: "回一个“？”", type: "tsundere" },
+          { text: "立刻打电话解释清楚", type: "boss" },
+          { text: "开始回想自己是不是说错话了", type: "moody" },
+          { text: "发个表情包化解", type: "sunny" }
+        ]
+      },
+      {
+        question: "你们最常因为什么小事拌嘴？",
+        options: [
+          { text: "我觉得我最对", type: "proud" },
+          { text: "你怎么没秒回我", type: "clingy" },
+          { text: "你明明说过却忘了", type: "detective" },
+          { text: "谁去下床关灯", type: "lazy" }
+        ]
+      },
+      {
+        question: "一天没见对象，晚上你会？",
+        options: [
+          { text: "直接安排见面", type: "boss" },
+          { text: "打电话分享今天的趣事", type: "sunny" },
+          { text: "约他出来吃夜宵", type: "foodie" },
+          { text: "提醒他早点睡", type: "manager" }
+        ]
+      },
+      {
+        question: "你最理想的约会画面是？",
+        options: [
+          { text: "两个人贴在一起，干什么都行", type: "clingy" },
+          { text: "在家看剧，外卖送到门口", type: "lazy" },
+          { text: "一起散步，情绪跟着晚霞起伏", type: "moody" },
+          { text: "探索一家有意思的小店，观察彼此反应", type: "detective" }
+        ]
+      }
+    ];
+
+    // 45 组双人组合结果（全部 unordered pair），确保任意结果都有专属组合名
+    const COMBOS = {
+      "boss+sunny": { name: "自带气场的快乐指挥官", tag: "一边安排全场，一边把气氛拉满。", eye: "气场和笑容兼具", relation: "一个负责规划，一个负责快乐", share: "我安排行程，你负责笑。" },
+      "boss+proud": { name: "自恋总裁", tag: "全世界都要听我的，而我本来就很棒。", eye: "自信到发光", relation: "互相欣赏，谁也不让谁", share: "跟我在一起，你眼光真的很好。" },
+      "boss+clingy": { name: "表面领导，实际求抱", tag: "嘴上负责安排全场，心里只想确认对象有没有在身边。", eye: "外强中干的黏人精", relation: "嘴上安排一切，身体诚实靠近", share: "我说了算，但你要在我身边。" },
+      "boss+lazy": { name: "嘴上安排旅行，最后一起躺酒店", tag: "计划可以宏大，行动最好从沙发开始。", eye: "理想远大但更爱舒服", relation: "规划满分，执行随缘", share: "世界很大，但我只想和你躺平。" },
+      "boss+tsundere": { name: "嘴硬总裁", tag: "安排得明明白白，夸我时却假装不在乎。", eye: "一边霸道一边害羞", relation: "命令式关心，反话式撒娇", share: "听我的，没有为什么，就是对你好。" },
+      "boss+moody": { name: "情绪稳定器", tag: "一边把行程安排完，一边接住对象的忽晴忽雨。", eye: "能扛事也能接情绪", relation: "一个定调，一个波动", share: "你闹你的，我罩着你。" },
+      "boss+detective": { name: "细节型指挥官", tag: "每个安排里都藏着对对象的小观察。", eye: "又贴心又有掌控感", relation: "安排里全是细节", share: "我不仅记得路，还记得你爱坐窗边。" },
+      "boss+foodie": { name: "美食指挥官", tag: "约会路线由胃决定，行程由我安排。", eye: "会吃还会安排", relation: "胃和行程都被安排", share: "今天约会吃什么，我说了算，但一定是你爱吃的。" },
+      "boss+manager": { name: "全能小管家", tag: "照顾对象的每一秒都不浪费。", eye: "事无巨细都替你想到", relation: "一个人操心，一个人被宠", share: "你负责开心，剩下的我全包。" },
+      "sunny+proud": { name: "全场最会夸自己，也最会逗人", tag: "不仅自己开心，还要把对象一起逗开心。", eye: "快乐又自信", relation: "互相捧场，气氛满分", share: "跟我在一起，想不开心都难。" },
+      "sunny+clingy": { name: "阳光小挂件", tag: "黏在你身边，顺便把阳光带给你。", eye: "又甜又暖", relation: "贴贴 plus 快乐", share: "我要挂在你身上，顺便给你晒晒太阳。" },
+      "sunny+lazy": { name: "快乐躺平组", tag: "躺平也要躺出节日感。", eye: "懒散但快乐", relation: "躺着也能很开心", share: "今天不努力了，就和你一起快乐躺平。" },
+      "sunny+tsundere": { name: "嘴硬小太阳", tag: "想说关心但会先丢一句“才不是为你”。", eye: "温暖但别扭", relation: "一边逗你，一边嘴硬", share: "我才不是特意逗你开心，是你笑点太低。" },
+      "sunny+moody": { name: "晴雨转换器", tag: "一个负责发光，一个负责下雨，但总能看见彩虹。", eye: "情绪反差大但可爱", relation: "阴天后必有晴天", share: "你阴天，我做你的小彩虹。" },
+      "sunny+detective": { name: "开心果侦探", tag: "笑着记住对象所有的喜好。", eye: "细心又乐观", relation: "快乐地发现彼此", share: "你的喜好我都记得，因为记你很开心。" },
+      "sunny+foodie": { name: "快乐可以迟到，但饭不能", tag: "只要有好吃的，今天就值得被原谅。", eye: "吃货界的太阳", relation: "用美食和快乐互相充电", share: "没有什么是一顿好吃的解决不了的。" },
+      "sunny+manager": { name: "人间小暖炉", tag: "照顾人也得让人笑出来。", eye: "暖心又靠谱", relation: "笑着照顾彼此", share: "我照顾你，也要让你笑。" },
+      "proud+clingy": { name: "自恋挂件", tag: "我很可爱，你也要一直看着我。", eye: "黏人且自信", relation: "一边贴贴一边求夸", share: "我这么可爱，你当然要多看我几眼。" },
+      "proud+lazy": { name: "躺着也觉得自己很帅", tag: "躺平是休息，自恋是充电。", eye: "躺平界的颜值担当", relation: "自恋让躺平更快乐", share: "就算躺着，我也是最可爱的那个。" },
+      "proud+tsundere": { name: "想被夸，但被夸后说“也就那样”", tag: "夸少了不高兴，夸多了还要装淡定。", eye: "傲娇又自恋", relation: "嘴上不要，心里窃喜", share: "你夸我，我就勉强接受吧。" },
+      "proud+moody": { name: "情绪过山车", tag: "心情像天气，但自信一直都在。", eye: "又飒又作", relation: "自信地闹情绪", share: "我情绪很多，但可爱是永恒的。" },
+      "proud+detective": { name: "细节型自恋", tag: "我不仅记得自己好看，也记得对象的习惯。", eye: "自恋但有洞察力", relation: "彼此的细节都记得", share: "我记住了我所有的优点，也记住了你的。" },
+      "proud+foodie": { name: "美食秀场", tag: "吃得好也要拍得好，朋友圈第一名。", eye: "会吃还会秀", relation: "美食与自恋齐飞", share: "这顿饭太好看了，跟我一起出镜吧。" },
+      "proud+manager": { name: "被照顾的霸总", tag: "嘴上“也就那样”，手上已经接过对象递的水。", eye: "傲娇但享受照顾", relation: "一边嫌弃一边依赖", share: "你对我好，我就勉为其难地收下。" },
+      "clingy+lazy": { name: "躺着也要贴贴", tag: "能坐着绝不站着，能贴着绝不分开。", eye: "又黏又爱躺", relation: "躺平也要在一起", share: "我不想动，但我想你，所以你过来。" },
+      "clingy+tsundere": { name: "嘴硬挂件", tag: "说“谁稀罕”，身体已经自动靠过去。", eye: "黏人但死不承认", relation: "身体比嘴诚实", share: "我才不想你呢，只是刚好站不稳。" },
+      "clingy+moody": { name: "情绪挂件", tag: "心情变化快，但想贴贴的心不变。", eye: "情绪化但黏人", relation: "情绪多变，贴贴不变", share: "我生气了，但你可以抱我。" },
+      "clingy+detective": { name: "对象的已读时间都记得", tag: "不是控制欲，是记性太好。", eye: "黏人且观察入微", relation: "用细节确认爱意", share: "我记得你几点回的消息，因为我在等你。" },
+      "clingy+foodie": { name: "投喂型挂件", tag: "想你就给你点吃的，顺便确认你在。", eye: "用食物表达想念", relation: "一边贴贴一边投喂", share: "我给你点了外卖，你吃完要理我。" },
+      "clingy+manager": { name: "一边提醒带伞，一边问你什么时候回家", tag: "照顾你是真的，想见你也是真的。", eye: "操心又黏人", relation: "照顾和想念同步", share: "伞带了，饭吃了，该回来见我了。" },
+      "lazy+tsundere": { name: "躺平式傲娇", tag: "懒得出门，但会给你留一杯水。", eye: "懒散但心软", relation: "嘴硬地照顾你", share: "我才不是特意给你倒的水，只是顺便。" },
+      "lazy+moody": { name: "情绪懒人沙发", tag: "不开心就躺下，躺下就更不想动。", eye: "躺平且情绪化", relation: "躺着消化所有情绪", share: "我现在是阴天，只想躺着，你陪我。" },
+      "lazy+detective": { name: "躺平观察家", tag: "躺着也能发现对象换了新发型。", eye: "躺着也洞察一切", relation: "安静观察，默默关心", share: "我虽然躺着，但你的一举一动我都看见了。" },
+      "lazy+foodie": { name: "能坐着解决的事绝不站起来", tag: "感情稳不稳定不知道，但外卖一定点得很稳。", eye: "会躺更会吃", relation: "外卖和躺平的爱情", share: "别吵架了，先点外卖，躺着吃。" },
+      "lazy+manager": { name: "服务型躺平", tag: "躺着指挥，但会记得提醒你吃药。", eye: "懒但靠谱", relation: "一个人躺着，一个人操心", share: "我躺着，但你的一切都记在我脑子里。" },
+      "tsundere+moody": { name: "情绪傲娇", tag: "嘴上说不生气，表情已经出卖一切。", eye: "又傲又情绪化", relation: "反话和情绪齐飞", share: "我没生气，我只是表情管理失败了。" },
+      "tsundere+detective": { name: "嘴硬，但什么都记得", tag: "表面说随便，实际上连对象奶茶几分糖都记得。", eye: "嘴硬心软细节控", relation: "用行动代替好话", share: "我说随便，但你的喜好我全记得。" },
+      "tsundere+foodie": { name: "投喂式傲娇", tag: "“顺手买的”，其实是绕路排了半小时。", eye: "用食物说反话", relation: "嘴硬地喂饱你", share: "顺手买的，你爱吃不吃。" },
+      "tsundere+manager": { name: "嫌弃型管家", tag: "嘴上“你怎么这么麻烦”，手上已经收拾好了。", eye: "一边嫌弃一边照顾", relation: "刀子嘴豆腐心", share: "你真的很麻烦，但我还是会管你。" },
+      "moody+detective": { name: "情绪侦探", tag: "一边敏感，一边把所有细节记得清清楚楚。", eye: "敏感又细心", relation: "细节引发情绪，情绪里有爱", share: "我注意到所有细节，包括你让我心动的瞬间。" },
+      "moody+foodie": { name: "治愈系投喂", tag: "情绪不好的时候，吃点甜的就好。", eye: "用美食调节情绪", relation: "情绪靠吃治愈", share: "别难过了，我请你吃甜的。" },
+      "moody+manager": { name: "一边闹情绪，一边照顾全世界", tag: "可以不开心，但不能忘记提醒对象带伞。", eye: "情绪化但责任心强", relation: "一边被照顾，一边照顾人", share: "我心情不好，但你的伞不能忘。" },
+      "detective+foodie": { name: "美食侦探", tag: "记得你爱吃什么，也记得你上次说想吃的那家店。", eye: "用细节投喂", relation: "观察和美食结合", share: "你说想吃的那家店，我已经记在小本本上了。" },
+      "detective+manager": { name: "细节型管家", tag: "你自己都没发现的小变化，它都默默记下了。", eye: "细心又操心", relation: "无声地照顾", share: "你的变化我都看得见，也都会放在心上。" },
+      "foodie+manager": { name: "投喂型管家", tag: "关心你的胃，也关心你有没有带伞。", eye: "以食为天也操心", relation: "一边喂饱一边照顾", share: "饭要按时吃，伞也要记得带。" }
+    };
+
+    /* =========================================================
+       视觉层：基于 SVG 的噜噜 / 噜妹角色渲染
+       注释：当前为风格一致的矢量占位插画，后续可替换为
+       更精致的官方角色素材或 3D 渲染图。
+       ========================================================= */
+
+    function svgWrapper(viewBox, content, width = "100%", height = "auto") {
+      return `<svg viewBox="${viewBox}" width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="bodyGrad" cx="35%" cy="30%" r="75%"><stop offset="0%" stop-color="#FFE08A"/><stop offset="100%" stop-color="#F4A261"/></radialGradient><filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur in="SourceAlpha" stdDeviation="3"/><feOffset dx="0" dy="3" result="offsetblur"/><feComponentTransfer><feFuncA type="linear" slope="0.15"/></feComponentTransfer><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>${content}</svg>`;
+    }
+
+    function luluBun() {
+      return `<circle cx="0" cy="-132" r="27" fill="#F4A261"/><circle cx="0" cy="-132" r="27" fill="url(#bodyGrad)" opacity="0.5"/><path d="M 0 -159 Q 5 -172 0 -179 Q -5 -172 0 -159" stroke="#8D6E63" stroke-width="4" stroke-linecap="round" fill="none"/>`;
+    }
+
+    function lumeiBonnet() {
+      return `<path d="M -120 -48 Q 0 -165 120 -48 Q 122 -28 102 -28 Q 82 -28 72 -48 Q 62 -28 42 -28 Q 22 -28 12 -48 Q 0 -28 -22 -28 Q -42 -28 -52 -48 Q -62 -28 -82 -28 Q -102 -28 -120 -48 Z" fill="#FFF8F0" stroke="#F0E6D8" stroke-width="2"/><ellipse cx="0" cy="-118" rx="23" ry="13" fill="#F4A261"/><path d="M -7 -125 Q 0 -143 7 -125 M 0 -131 Q 5 -145 10 -129" stroke="#81C784" stroke-width="5" stroke-linecap="round" fill="none"/>`;
+    }
+
+    const DEFAULT_ARMS = `
+      <path d="M -96 58 Q -122 92 -106 118" stroke="#FFC857" stroke-width="24" stroke-linecap="round" fill="none"/>
+      <path d="M 96 58 Q 122 92 106 118" stroke="#FFC857" stroke-width="24" stroke-linecap="round" fill="none"/>
+      <circle cx="-106" cy="120" r="15" fill="#FFC857"/>
+      <circle cx="106" cy="120" r="15" fill="#FFC857"/>
+    `;
+
+    const TYPE_VISUALS = {
+      boss: {
+        eyes: `<g transform="translate(0,-60)"><rect x="-58" y="-16" width="48" height="28" rx="12" fill="#3E3E3E"/><rect x="10" y="-16" width="48" height="28" rx="12" fill="#3E3E3E"/><rect x="-46" y="-10" width="20" height="7" rx="3" fill="#fff" opacity="0.25"/><rect x="22" y="-10" width="20" height="7" rx="3" fill="#fff" opacity="0.25"/></g>`,
+        mouth: `<path d="M -16 20 Q 0 25 18 18" stroke="#7D5A50" stroke-width="4" stroke-linecap="round" fill="none"/>`,
+        clothing: `<path d="M -82 18 Q 0 -8 82 18 L 92 82 Q 0 62 -92 82 Z" fill="#4E342E"/><path d="M -9 18 L 0 48 L 9 18 L 0 12 Z" fill="#E57373"/>`,
+        arms: `<path d="M -96 58 Q -125 78 -120 105" stroke="#FFC857" stroke-width="24" stroke-linecap="round" fill="none"/><path d="M 96 58 Q 125 78 120 105" stroke="#FFC857" stroke-width="24" stroke-linecap="round" fill="none"/><circle cx="-120" cy="105" r="15" fill="#FFC857"/><circle cx="120" cy="105" r="15" fill="#FFC857"/>`,
+        prop: `<rect x="98" y="82" width="38" height="50" rx="4" fill="#FFF" stroke="#D7CCC8" stroke-width="2"/><rect x="103" y="90" width="28" height="3" fill="#BDBDBD"/><rect x="103" y="98" width="22" height="3" fill="#BDBDBD"/><rect x="103" y="106" width="26" height="3" fill="#BDBDBD"/>`,
+        bgDecor: `<g opacity="0.55"><path d="M -135 -135 L -115 -150 L -95 -135 L -104 -118 L -115 -128 L -126 -118 Z" fill="#FFD54F"/></g>`
+      },
+      sunny: {
+        eyes: `<g transform="translate(0,-60)"><ellipse cx="-35" cy="0" rx="17" ry="21" fill="#fff"/><circle cx="-35" cy="0" r="10" fill="#3E3E3E"/><circle cx="-31" cy="-5" r="4" fill="#fff"/><ellipse cx="35" cy="0" rx="17" ry="21" fill="#fff"/><circle cx="35" cy="0" r="10" fill="#3E3E3E"/><circle cx="39" cy="-5" r="4" fill="#fff"/></g>`,
+        mouth: `<path d="M -24 14 Q 0 40 24 14 Z" fill="#fff" stroke="#7D5A50" stroke-width="3" stroke-linejoin="round"/><path d="M -8 26 Q 0 30 8 26" stroke="#E57373" stroke-width="3" stroke-linecap="round" fill="none"/>`,
+        clothing: `<path d="M -78 20 Q 0 -2 78 20 L 86 78 Q 0 60 -86 78 Z" fill="#C8E6C9"/>`,
+        arms: `<path d="M -96 58 Q -128 40 -120 10" stroke="#FFC857" stroke-width="24" stroke-linecap="round" fill="none"/><path d="M 96 58 Q 128 40 120 10" stroke="#FFC857" stroke-width="24" stroke-linecap="round" fill="none"/><circle cx="-120" cy="10" r="15" fill="#FFC857"/><circle cx="120" cy="10" r="15" fill="#FFC857"/>`,
+        prop: `<g stroke="#FFD54F" stroke-width="4" stroke-linecap="round"><line x1="0" y1="-165" x2="0" y2="-185"/><line x1="0" y1="65" x2="0" y2="85"/><line x1="-85" y1="-100" x2="-100" y2="-115"/><line x1="85" y1="-100" x2="100" y2="-115"/><line x1="-120" y1="-50" x2="-140" y2="-55"/><line x1="120" y1="-50" x2="140" y2="-55"/></g>`,
+        bgDecor: `<g opacity="0.45"><path d="M 130 -120 C 120 -135 140 -135 130 -120" stroke="#FF8A80" stroke-width="4" fill="none"/><path d="M -130 -90 C -140 -105 -120 -105 -130 -90" stroke="#FF8A80" stroke-width="4" fill="none"/></g>`
+      },
+      proud: {
+        eyes: `<g transform="translate(0,-60)"><path d="M -52 0 Q -35 12 -18 0" stroke="#3E3E3E" stroke-width="4" fill="none" stroke-linecap="round"/><ellipse cx="35" cy="0" rx="17" ry="21" fill="#fff"/><circle cx="35" cy="0" r="10" fill="#3E3E3E"/><circle cx="39" cy="-5" r="4" fill="#fff"/><path d="M 28 -28 L 32 -36 L 40 -34 L 34 -28 Z" fill="#FFD54F"/></g>`,
+        mouth: `<path d="M -12 18 Q 0 24 12 18" stroke="#7D5A50" stroke-width="3" fill="none" stroke-linecap="round"/><ellipse cx="6" cy="24" rx="6" ry="4" fill="#E57373"/>`,
+        clothing: `<path d="M -76 20 Q 0 -2 76 20 L 84 76 Q 0 58 -84 76 Z" fill="#FFD1DC"/><path d="M -34 -10 Q 0 8 34 -10" stroke="#FFF" stroke-width="5" fill="none" stroke-linecap="round"/>`,
+        arms: `<path d="M -96 58 Q -128 78 -120 110" stroke="#FFC857" stroke-width="24" stroke-linecap="round" fill="none"/><path d="M 96 58 Q 128 78 120 110" stroke="#FFC857" stroke-width="24" stroke-linecap="round" fill="none"/><circle cx="-120" cy="110" r="15" fill="#FFC857"/><circle cx="120" cy="110" r="15" fill="#FFC857"/>`,
+        prop: `<g transform="translate(110,95)"><circle cx="0" cy="0" r="22" fill="#FFF" stroke="#FFD1DC" stroke-width="3"/><circle cx="0" cy="0" r="18" fill="none" stroke="#FFD54F" stroke-width="2"/><circle cx="-6" cy="-4" r="4" fill="#F4A261"/><circle cx="8" cy="6" r="3" fill="#81C784"/></g><g transform="translate(-90,-90)"><path d="M 0 -10 L 3 -3 L 10 -3 L 5 2 L 7 9 L 0 5 L -7 9 L -5 2 L -10 -3 L -3 -3 Z" fill="#FFD54F"/></g>`,
+        bgDecor: `<g opacity="0.5"><path d="M 120 -130 L 128 -145 L 136 -130 Z" fill="#FFD54F"/><path d="M -120 -120 L -112 -135 L -104 -120 Z" fill="#FFD54F"/></g>`
+      },
+      clingy: {
+        eyes: `<g transform="translate(0,-60)"><ellipse cx="-35" cy="2" rx="16" ry="20" fill="#fff"/><circle cx="-32" cy="2" r="9" fill="#3E3E3E"/><circle cx="-29" cy="-2" r="3" fill="#fff"/><ellipse cx="35" cy="2" rx="16" ry="20" fill="#fff"/><circle cx="32" cy="2" r="9" fill="#3E3E3E"/><circle cx="29" cy="-2" r="3" fill="#fff"/></g>`,
+        mouth: `<path d="M -8 26 Q 0 20 8 26" stroke="#7D5A50" stroke-width="3" fill="none" stroke-linecap="round"/>`,
+        clothing: `<path d="M -88 -55 Q 0 -95 88 -55 L 82 -35 Q 0 -70 -82 -35 Z" fill="#E2D5F5" opacity="0.85"/>`,
+        arms: `<path d="M -96 58 Q -115 90 -75 100" stroke="#FFC857" stroke-width="24" stroke-linecap="round" fill="none"/><path d="M 96 58 Q 115 90 75 100" stroke="#FFC857" stroke-width="24" stroke-linecap="round" fill="none"/><circle cx="-75" cy="100" r="15" fill="#FFC857"/><circle cx="75" cy="100" r="15" fill="#FFC857"/>`,
+        prop: `<g opacity="0.7"><path d="M -110 -90 C -120 -105 -100 -105 -110 -90" fill="#FF8A80"/><path d="M 110 -100 C 100 -115 120 -115 110 -100" fill="#FF8A80"/><path d="M 0 -155 C -10 -170 10 -170 0 -155" fill="#FF8A80"/></g>`,
+        bgDecor: `<g opacity="0.35"><circle cx="-130" cy="-120" r="10" fill="#E2D5F5"/><circle cx="130" cy="-90" r="8" fill="#E2D5F5"/></g>`
+      },
+      lazy: {
+        eyes: `<g transform="translate(0,-60)"><path d="M -50 -2 Q -35 6 -20 -2" stroke="#3E3E3E" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M 20 -2 Q 35 6 50 -2" stroke="#3E3E3E" stroke-width="4" fill="none" stroke-linecap="round"/></g>`,
+        mouth: `<path d="M -10 22 Q 0 26 10 22" stroke="#7D5A50" stroke-width="3" fill="none" stroke-linecap="round"/>`,
+        clothing: `<path d="M -78 20 Q 0 -2 78 20 L 84 78 Q 0 60 -84 78 Z" fill="#FFF9C4"/><circle cx="-20" cy="40" r="3" fill="#F4A261"/><circle cx="20" cy="55" r="3" fill="#F4A261"/><circle cx="-18" cy="68" r="3" fill="#F4A261"/>`,
+        arms: `<path d="M -96 58 Q -115 85 -90 105" stroke="#FFC857" stroke-width="24" stroke-linecap="round" fill="none"/><path d="M 96 58 Q 115 85 90 105" stroke="#FFC857" stroke-width="24" stroke-linecap="round" fill="none"/><circle cx="-90" cy="105" r="15" fill="#FFC857"/><circle cx="90" cy="105" r="15" fill="#FFC857"/>`,
+        prop: `<rect x="-60" y="85" width="120" height="55" rx="14" fill="#FFF" stroke="#E0E0E0" stroke-width="2"/><rect x="-70" y="92" width="14" height="40" rx="4" fill="#C8E6C9"/><rect x="56" y="92" width="14" height="40" rx="4" fill="#C8E6C9"/><text x="95" y="-110" font-size="28" fill="#90CAF9" font-weight="700">Z</text><text x="115" y="-130" font-size="20" fill="#90CAF9" font-weight="700">z</text>`,
+        bgDecor: `<g opacity="0.4"><circle cx="-130" cy="-120" r="12" fill="#E0E0E0"/><circle cx="130" cy="-100" r="8" fill="#E0E0E0"/></g>`
+      },
+      tsundere: {
+        eyes: `<g transform="translate(0,-60)"><ellipse cx="-35" cy="0" rx="17" ry="21" fill="#fff"/><circle cx="-30" cy="0" r="10" fill="#3E3E3E"/><circle cx="-27" cy="-5" r="4" fill="#fff"/><ellipse cx="35" cy="0" rx="17" ry="21" fill="#fff"/><circle cx="40" cy="0" r="10" fill="#3E3E3E"/><circle cx="43" cy="-5" r="4" fill="#fff"/></g>`,
+        mouth: `<path d="M -10 24 Q 0 18 10 24" stroke="#7D5A50" stroke-width="3" fill="none" stroke-linecap="round"/>`,
+        clothing: `<path d="M -76 20 Q 0 -2 76 20 L 82 76 Q 0 58 -82 76 Z" fill="#B3E5FC"/><path d="M -30 20 L 0 45 L 30 20" stroke="#FFF" stroke-width="4" fill="none" stroke-linecap="round"/>`,
+        arms: `<path d="M -96 58 Q -80 90 -20 90" stroke="#FFC857" stroke-width="24" stroke-linecap="round" fill="none"/><path d="M 96 58 Q 80 90 20 90" stroke="#FFC857" stroke-width="24" stroke-linecap="round" fill="none"/>`,
+        prop: `<g transform="translate(0,105)"><rect x="-22" y="-18" width="44" height="36" rx="6" fill="#FFAB91"/><rect x="-22" y="-18" width="44" height="10" rx="3" fill="#E57373"/><path d="M -5 -10 L 0 -4 L 8 -14" stroke="#FFF" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g>`,
+        bgDecor: `<g opacity="0.45"><path d="M -110 -120 L -100 -110 M -100 -120 L -110 -110" stroke="#FF8A80" stroke-width="3" stroke-linecap="round"/><path d="M 110 -120 L 120 -110 M 120 -120 L 110 -110" stroke="#FF8A80" stroke-width="3" stroke-linecap="round"/></g>`
+      },
+      moody: {
+        eyes: `<g transform="translate(0,-60)"><ellipse cx="-35" cy="2" rx="17" ry="21" fill="#fff"/><circle cx="-35" cy="2" r="10" fill="#3E3E3E"/><circle cx="-31" cy="-2" r="4" fill="#fff"/><path d="M -55 -22 Q -35 -30 -15 -22" stroke="#3E3E3E" stroke-width="3" fill="none" stroke-linecap="round"/><ellipse cx="35" cy="2" rx="17" ry="21" fill="#fff"/><circle cx="35" cy="2" r="10" fill="#3E3E3E"/><circle cx="39" cy="-2" r="4" fill="#fff"/><path d="M 15 -16 Q 35 -22 55 -16" stroke="#3E3E3E" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M 55 -5 Q 62 5 58 15" stroke="#81D4FA" stroke-width="3" fill="none" stroke-linecap="round"/></g>`,
+        mouth: `<path d="M -14 22 Q -7 16 0 22 Q 7 16 14 22" stroke="#7D5A50" stroke-width="3" fill="none" stroke-linecap="round"/>`,
+        clothing: `<path d="M -76 20 Q 0 -2 76 20 L 82 76 Q 0 58 -82 76 Z" fill="#E1F5FE"/>`,
+        arms: DEFAULT_ARMS,
+        prop: `<g opacity="0.7"><path d="M -115 -95 Q -90 -125 -60 -95 Q -90 -70 -115 -95 Z" fill="#E0E0E0"/><circle cx="-88" cy="-88" r="4" fill="#90CAF9"/><circle cx="-70" cy="-92" r="3" fill="#90CAF9"/><circle cx="-100" cy="-98" r="3" fill="#90CAF9"/><path d="M 70 -110 L 85 -130 L 100 -110 Z" fill="#FFD54F"/><line x1="85" y1="-110" x2="85" y2="-95" stroke="#FFD54F" stroke-width="3"/></g>`,
+        bgDecor: `<g opacity="0.4"><path d="M 120 -130 Q 135 -145 150 -130" stroke="#90CAF9" stroke-width="3" fill="none"/><path d="M -140 -100 Q -125 -115 -110 -100" stroke="#FFD54F" stroke-width="3" fill="none"/></g>`
+      },
+      detective: {
+        eyes: `<g transform="translate(0,-60)"><ellipse cx="-35" cy="0" rx="14" ry="17" fill="#fff"/><circle cx="-35" cy="0" r="8" fill="#3E3E3E"/><circle cx="-32" cy="-4" r="3" fill="#fff"/><ellipse cx="35" cy="0" rx="14" ry="17" fill="#fff"/><circle cx="35" cy="0" r="8" fill="#3E3E3E"/><circle cx="38" cy="-4" r="3" fill="#fff"/></g>`,
+        mouth: `<path d="M -10 24 L 10 24" stroke="#7D5A50" stroke-width="3" stroke-linecap="round"/>`,
+        clothing: `<path d="M -80 18 Q 0 -8 80 18 L 88 82 Q 0 62 -88 82 Z" fill="#8D6E63"/>`,
+        arms: `<path d="M -96 58 Q -120 88 -100 118" stroke="#FFC857" stroke-width="24" stroke-linecap="round" fill="none"/><path d="M 96 58 Q 118 85 95 112" stroke="#FFC857" stroke-width="24" stroke-linecap="round" fill="none"/><circle cx="-100" cy="118" r="15" fill="#FFC857"/><circle cx="95" cy="112" r="15" fill="#FFC857"/>`,
+        prop: `<g transform="translate(-100,118) rotate(-20)"><circle cx="0" cy="0" r="22" fill="none" stroke="#8D6E63" stroke-width="4"/><line x1="14" y1="14" x2="34" y2="34" stroke="#8D6E63" stroke-width="5" stroke-linecap="round"/></g><g transform="translate(95,112)"><rect x="-14" y="-20" width="28" height="36" rx="3" fill="#FFF" stroke="#D7CCC8" stroke-width="2"/><rect x="-10" y="-14" width="20" height="2" fill="#BDBDBD"/><rect x="-10" y="-8" width="16" height="2" fill="#BDBDBD"/></g><path d="M -135 -110 Q -125 -100 -115 -110 Q -105 -100 -95 -110" stroke="#8D6E63" stroke-width="4" stroke-linecap="round" fill="none"/>`,
+        bgDecor: `<g opacity="0.4"><ellipse cx="-120" cy="-130" rx="12" ry="7" fill="#8D6E63"/><ellipse cx="-100" cy="-120" rx="10" ry="6" fill="#8D6E63"/></g>`
+      },
+      foodie: {
+        eyes: `<g transform="translate(0,-60)"><path d="M -50 0 Q -35 12 -20 0" stroke="#3E3E3E" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M 20 0 Q 35 12 50 0" stroke="#3E3E3E" stroke-width="4" fill="none" stroke-linecap="round"/></g>`,
+        mouth: `<path d="M -18 14 Q 0 34 18 14 Z" fill="#E57373" stroke="#7D5A50" stroke-width="3" stroke-linejoin="round"/>`,
+        clothing: `<path d="M -78 20 Q 0 -2 78 20 L 84 78 Q 0 60 -84 78 Z" fill="#FFCC80"/><path d="M -40 30 Q 0 50 40 30" stroke="#FFF" stroke-width="4" fill="none" stroke-linecap="round"/>`,
+        arms: `<path d="M -96 58 Q -115 90 -80 112" stroke="#FFC857" stroke-width="24" stroke-linecap="round" fill="none"/><path d="M 96 58 Q 115 90 80 112" stroke="#FFC857" stroke-width="24" stroke-linecap="round" fill="none"/><circle cx="-80" cy="112" r="15" fill="#FFC857"/><circle cx="80" cy="112" r="15" fill="#FFC857"/>`,
+        prop: `<g transform="translate(0,110)"><path d="M -22 -28 L -18 18 L 18 18 L 22 -28 Z" fill="#D7CCC8" opacity="0.4"/><rect x="-20" y="-30" width="40" height="8" rx="3" fill="#FFF" stroke="#D7CCC8" stroke-width="2"/><rect x="-16" y="-22" width="32" height="36" rx="4" fill="#FFF" stroke="#D7CCC8" stroke-width="2"/><line x1="-16" y1="-14" x2="16" y2="-14" stroke="#D7CCC8" stroke-width="2"/><circle cx="-8" cy="-6" r="3" fill="#8D6E63"/><circle cx="6" cy="-2" r="3" fill="#8D6E63"/><circle cx="0" cy="6" r="3" fill="#8D6E63"/><circle cx="10" cy="10" r="3" fill="#8D6E63"/></g><g transform="translate(105,105)"><rect x="-14" y="-12" width="28" height="22" rx="4" fill="#FFF" stroke="#FFD1DC" stroke-width="2"/><path d="M -8 -6 Q 0 0 8 -6" stroke="#E57373" stroke-width="2" fill="none"/></g>`,
+        bgDecor: `<g opacity="0.45"><circle cx="-130" cy="-120" r="8" fill="#FFCC80"/><circle cx="130" cy="-100" r="8" fill="#FFCC80"/></g>`
+      },
+      manager: {
+        eyes: `<g transform="translate(0,-60)"><ellipse cx="-35" cy="0" rx="16" ry="20" fill="#fff"/><circle cx="-35" cy="0" r="9" fill="#3E3E3E"/><circle cx="-32" cy="-4" r="3" fill="#fff"/><ellipse cx="35" cy="0" rx="16" ry="20" fill="#fff"/><circle cx="35" cy="0" r="9" fill="#3E3E3E"/><circle cx="38" cy="-4" r="3" fill="#fff"/></g>`,
+        mouth: `<path d="M -14 20 Q 0 27 14 20" stroke="#7D5A50" stroke-width="3" fill="none" stroke-linecap="round"/>`,
+        clothing: `<path d="M -78 20 Q 0 -2 78 20 L 84 78 Q 0 60 -84 78 Z" fill="#A5D6A7"/><path d="M -35 25 Q 0 42 35 25" stroke="#FFF" stroke-width="4" fill="none" stroke-linecap="round"/>`,
+        arms: `<path d="M -96 58 Q -122 88 -105 118" stroke="#FFC857" stroke-width="24" stroke-linecap="round" fill="none"/><path d="M 96 58 Q 120 88 90 115" stroke="#FFC857" stroke-width="24" stroke-linecap="round" fill="none"/><circle cx="-105" cy="118" r="15" fill="#FFC857"/><circle cx="90" cy="115" r="15" fill="#FFC857"/>`,
+        prop: `<g transform="translate(-105,118) rotate(-15)"><path d="M -28 -35 Q 0 -55 28 -35 L 24 50 Q 0 60 -24 50 Z" fill="#FFF9C4" stroke="#D7CCC8" stroke-width="2"/><line x1="0" y1="-45" x2="0" y2="50" stroke="#D7CCC8" stroke-width="2"/></g><g transform="translate(90,115)"><rect x="-14" y="-18" width="28" height="34" rx="4" fill="#FFF" stroke="#A5D6A7" stroke-width="2"/><rect x="-10" y="-12" width="20" height="2" fill="#BDBDBD"/><rect x="-10" y="-6" width="16" height="2" fill="#BDBDBD"/><rect x="-10" y="0" width="18" height="2" fill="#BDBDBD"/></g>`,
+        bgDecor: `<g opacity="0.45"><path d="M -120 -130 Q -100 -150 -80 -130 L -80 -120 L -120 -120 Z" fill="#A5D6A7"/><path d="M 110 -120 L 120 -120 L 125 -110 L 115 -110 Z" fill="#A5D6A7"/></g>`
+      }
+    };
+
+    function renderCharacter(role, type, transform) {
+      const v = TYPE_VISUALS[type] || TYPE_VISUALS.sunny;
+      const skin = "#FFC857";
+      const shadow = "#F4A261";
+      const isLumei = role === "lumei";
+      return `<g transform="${transform}">
+        ${v.bgDecor || ""}
+        <ellipse cx="0" cy="70" rx="96" ry="89" fill="${skin}" />
+        <ellipse cx="0" cy="70" rx="96" ry="89" fill="url(#bodyGrad)" opacity="0.35" />
+        ${isLumei
+          ? `<path d="M -86 126 Q 0 182 86 126 L 66 64 Q 0 84 -66 64 Z" fill="#FFD1DC"/>`
+          : `<path d="M -88 126 Q 0 178 88 126 L 78 94 Q 0 114 -78 94 Z" fill="#D98E48"/>`}
+        <ellipse cx="0" cy="-40" rx="116" ry="101" fill="${skin}" />
+        <ellipse cx="-82" cy="-102" rx="24" ry="20" fill="${skin}" />
+        <ellipse cx="82" cy="-102" rx="24" ry="20" fill="${skin}" />
+        <ellipse cx="0" cy="-5" rx="77" ry="59" fill="${shadow}" opacity="0.55" />
+        <ellipse cx="0" cy="-26" rx="19" ry="13" fill="#A67C52" />
+        ${v.eyes}
+        ${v.mouth}
+        <circle cx="-72" cy="-28" r="13" fill="#FFB7C5" opacity="0.55" />
+        <circle cx="72" cy="-28" r="13" fill="#FFB7C5" opacity="0.55" />
+        ${isLumei ? lumeiBonnet() : luluBun()}
+        ${v.clothing || ""}
+        ${v.arms || DEFAULT_ARMS}
+        ${v.prop || ""}
+      </g>`;
+    }
+
+    function renderHero() {
+      const content = `
+        <rect x="0" y="0" width="520" height="360" fill="none" />
+        ${renderCharacter("lumei", "sunny", "translate(170,180) scale(0.85)")}
+        ${renderCharacter("lulu", "boss", "translate(350,190) scale(0.9)")}
+        <g opacity="0.5"><path d="M 240 120 C 250 105 270 105 280 120 C 290 105 310 105 320 120" stroke="#FF8A80" stroke-width="4" fill="none" stroke-linecap="round"/></g>
+      `;
+      return svgWrapper("0 0 520 360", content);
+    }
+
+    function renderLoading() {
+      const content = renderCharacter("lulu", "sunny", "translate(200,200) scale(1)");
+      return svgWrapper("0 0 400 400", content);
+    }
+
+    function renderResultVisual(variant, primaryType, secondaryType) {
+      if (variant === "couple") {
+        const leftType = secondaryType || primaryType;
+        const content = `
+          <rect x="0" y="0" width="400" height="360" fill="none" />
+          ${renderCharacter("lulu", primaryType, "translate(125,190) scale(0.82)")}
+          ${renderCharacter("lumei", leftType, "translate(280,195) scale(0.78)")}
+          <g opacity="0.5"><path d="M 185 110 C 195 95 215 95 225 110" stroke="#FF8A80" stroke-width="4" fill="none" stroke-linecap="round"/></g>
+        `;
+        return svgWrapper("0 0 400 360", content);
+      }
+      const t = variant === "lumei" ? "lumei" : "lulu";
+      const content = renderCharacter(t, primaryType, "translate(200,200) scale(1)");
+      return svgWrapper("0 0 400 400", content);
+    }
+
+    /* =========================================================
+       逻辑层：状态管理与页面切换
+       ========================================================= */
+
+    let currentQuestion = 0;
+    const answers = new Array(QUESTIONS.length).fill(null);
+
+    const screens = {
+      home: document.getElementById("home"),
+      quiz: document.getElementById("quiz"),
+      loading: document.getElementById("loading"),
+      result: document.getElementById("result")
+    };
+
+    function showScreen(name) {
+      Object.values(screens).forEach(s => s.classList.remove("active"));
+      screens[name].classList.add("active");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function shuffleArray(array) {
+      const a = array.slice();
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    // 每道题渲染时都会重新打乱选项顺序，避免 A/B/C/D 固定对应某一类型
+    const shuffledQuestions = QUESTIONS.map(q => ({
+      ...q,
+      options: shuffleArray(q.options)
+    }));
+
+    function renderQuestion() {
+      const q = shuffledQuestions[currentQuestion];
+      document.getElementById("quizCount").textContent = `${currentQuestion + 1} / ${shuffledQuestions.length}`;
+      document.getElementById("progressBar").style.width = `${((currentQuestion + 1) / shuffledQuestions.length) * 100}%`;
+      document.getElementById("questionText").textContent = q.question;
+
+      const box = document.getElementById("optionsBox");
+      box.innerHTML = "";
+      const markers = ["A", "B", "C", "D"];
+      q.options.forEach((opt, idx) => {
+        const el = document.createElement("div");
+        el.className = "option";
+        if (answers[currentQuestion] === idx) el.classList.add("selected");
+        el.innerHTML = `<span class="option-marker">${markers[idx]}</span><span class="option-text">${opt.text}</span>`;
+        el.addEventListener("click", () => selectOption(idx));
+        box.appendChild(el);
+      });
+
+      const prevBtn = document.getElementById("prevBtn");
+      prevBtn.style.visibility = currentQuestion === 0 ? "hidden" : "visible";
+      document.getElementById("nextBtn").disabled = answers[currentQuestion] === null;
+    }
+
+    function selectOption(idx) {
+      answers[currentQuestion] = idx;
+      renderQuestion();
+      setTimeout(() => {
+        if (currentQuestion < shuffledQuestions.length - 1) {
+          currentQuestion++;
+          renderQuestion();
+        } else {
+          finishQuiz();
+        }
+      }, 280);
+    }
+
+    function finishQuiz() {
+      showScreen("loading");
+      document.getElementById("loadingBox").innerHTML = renderLoading() + `<div class="loading-text">正在分析你的噜噜属性<span class="loading-dots"></span></div>`;
+      setTimeout(() => {
+        renderResult();
+        showScreen("result");
+      }, 1500);
+    }
+
+    function calculateScores() {
+      const scores = {};
+      TYPE_ORDER.forEach(t => scores[t] = 0);
+      answers.forEach((ansIdx, qIdx) => {
+        if (ansIdx === null) return;
+        const type = shuffledQuestions[qIdx].options[ansIdx].type;
+        if (scores[type] !== undefined) scores[type]++;
+      });
+      return Object.entries(scores).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+    }
+
+    function getCombo(types) {
+      if (types.length === 2) {
+        const key = [...types].sort().join("+");
+        return COMBOS[key] || {
+          name: `${RESULT_TYPES[types[0]].label}×${RESULT_TYPES[types[1]].label}组合`,
+          tag: "两种属性在你身上奇妙共存。",
+          eye: "一个复杂但可爱的人",
+          relation: "互补又合拍",
+          share: "和你在一起的每一天都像开盲盒。"
+        };
+      }
+      return {
+        name: `${types.map(t => RESULT_TYPES[t].label).join("+")}`,
+        tag: "三种属性在你身上同时营业。",
+        eye: "一个丰富又可爱的存在",
+        relation: "每天都不一样，但都很可爱",
+        share: "我有好几种可爱，你慢慢发现。"
+      };
+    }
+
+    function computeResult() {
+      const sorted = calculateScores();
+      const primary = { type: sorted[0][0], score: sorted[0][1] };
+      const secondary = { type: sorted[1][0], score: sorted[1][1] };
+      const tertiary = { type: sorted[2][0], score: sorted[2][1] };
+
+      const tiePrimary = primary.score === secondary.score;
+      const tieTriple = tiePrimary && secondary.score === tertiary.score;
+
+      let mode = "single";
+      let combo = null;
+      let activeTypes = [primary.type];
+
+      if (tieTriple) {
+        mode = "triple";
+        combo = getCombo([primary.type, secondary.type, tertiary.type]);
+        activeTypes = [primary.type, secondary.type, tertiary.type];
+      } else if (tiePrimary) {
+        mode = "pair";
+        combo = getCombo([primary.type, secondary.type]);
+        activeTypes = [primary.type, secondary.type];
+      } else if (secondary.score >= primary.score - 1) {
+        mode = "pair";
+        combo = getCombo([primary.type, secondary.type]);
+        activeTypes = [primary.type, secondary.type];
+      }
+
+      return { primary, secondary, tertiary, mode, combo, activeTypes };
+    }
+
+    function randomVariant(mode) {
+      if (mode === "pair" || mode === "triple") return "couple";
+      const r = Math.random();
+      if (r < 0.34) return "lulu";
+      if (r < 0.67) return "lumei";
+      return "couple";
+    }
+
+    let currentResultText = "";
+
+    function renderResult() {
+      const r = computeResult();
+      const variant = randomVariant(r.mode);
+      const primaryInfo = RESULT_TYPES[r.primary.type];
+      const secondaryInfo = RESULT_TYPES[r.secondary.type];
+      const tertiaryInfo = RESULT_TYPES[r.tertiary.type];
+
+      let title, typeLabel;
+      if (r.mode === "single") {
+        const suffix = variant === "lulu" ? "噜噜" : variant === "lumei" ? "噜妹" : "噜噜噜妹";
+        title = `你是：${primaryInfo.label}型${suffix}`;
+        typeLabel = primaryInfo.label;
+      } else {
+        title = `你们是：${r.combo.name}型噜噜噜妹`;
+        typeLabel = r.combo.name;
+      }
+
+      const visualType = r.mode === "single" ? r.primary.type : r.primary.type;
+      const secondaryVisualType = r.mode === "single" ? r.primary.type : r.secondary.type;
+
+      const cardHTML = `
+        <div class="result-visual">
+          ${renderResultVisual(variant, visualType, secondaryVisualType)}
+        </div>
+        <div class="result-body">
+          <div class="result-type">${typeLabel}</div>
+          <h2 class="result-title">${title}</h2>
+          <div class="result-keyword">${r.mode === "single" ? primaryInfo.keyword : r.combo.tag}</div>
+
+          <div class="result-section">
+            <h4>你的恋爱关键词</h4>
+            <p>${r.mode === "single" ? primaryInfo.keyword : `${primaryInfo.keyword} + ${secondaryInfo.keyword}`}</p>
+          </div>
+
+          <div class="result-section">
+            <h4>你的专属恋爱场景</h4>
+            <p>${primaryInfo.scene}</p>
+          </div>
+
+          <div class="result-section">
+            <h4>你的反差萌点</h4>
+            <p>${primaryInfo.contrast}</p>
+          </div>
+
+          <div class="result-section">
+            <h4>你的主属性</h4>
+            <p>${primaryInfo.label}：${primaryInfo.desc}</p>
+          </div>
+
+          ${r.mode !== "single" ? `
+          <div class="result-section">
+            <h4>你的副属性</h4>
+            <p>${secondaryInfo.label}：${secondaryInfo.desc}</p>
+          </div>` : ""}
+
+          <div class="result-section">
+            <h4>你的隐藏属性</h4>
+            <p>${tertiaryInfo.label}：${tertiaryInfo.keyword}。${tertiaryInfo.desc}</p>
+          </div>
+
+          <div class="result-section">
+            <h4>给对象的小建议</h4>
+            <p>${primaryInfo.advice}</p>
+          </div>
+
+          <div class="result-section">
+            <h4>你在对象眼里可能是</h4>
+            <p>${r.mode === "single" ? primaryInfo.inEyes : r.combo.eye}</p>
+          </div>
+
+          <div class="result-section">
+            <h4>你们的相处模式</h4>
+            <p>${r.mode === "single" ? primaryInfo.pattern : r.combo.relation}</p>
+          </div>
+
+          <div class="result-section">
+            <h4>你们的日常画风</h4>
+            <p>${r.mode === "single" ? primaryInfo.daily : `${primaryInfo.daily} 同时也有 ${secondaryInfo.daily}`}</p>
+          </div>
+
+          <div class="result-share-line">${r.mode === "single" ? primaryInfo.shareLine : r.combo.share}</div>
+        </div>
+      `;
+
+      document.getElementById("resultCard").innerHTML = cardHTML;
+
+      currentResultText = `【测测你和对象是哪个版本的噜噜噜妹】\n${title}\n关键词：${r.mode === "single" ? primaryInfo.keyword : `${primaryInfo.keyword} + ${secondaryInfo.keyword}`}\n主属性：${primaryInfo.label}\n隐藏属性：${tertiaryInfo.label}\n相处模式：${r.mode === "single" ? primaryInfo.pattern : r.combo.relation}\n${r.mode === "single" ? primaryInfo.shareLine : r.combo.share}\n\n趣味测试仅供娱乐，结果不代表真实人格。`;
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById("toast");
+      toast.textContent = msg;
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 2200);
+    }
+
+    async function copyResult() {
+      try {
+        await navigator.clipboard.writeText(currentResultText);
+        showToast("结果文案已复制");
+      } catch (e) {
+        showToast("复制失败，请手动截图分享");
+      }
+    }
+
+    async function shareResult() {
+      const payload = {
+        title: "测测你和对象是哪个版本的噜噜噜妹",
+        text: currentResultText,
+        url: location.href
+      };
+      if (navigator.share) {
+        try {
+          await navigator.share(payload);
+        } catch (e) {
+          if (e.name !== "AbortError") copyResult();
+        }
+      } else {
+        copyResult();
+      }
+    }
+
+    function restart() {
+      currentQuestion = 0;
+      answers.fill(null);
+      // 重新打乱题目选项
+      shuffledQuestions.forEach((q, i) => {
+        q.options = shuffleArray(QUESTIONS[i].options);
+      });
+      showScreen("home");
+    }
+
+    document.getElementById("startBtn").addEventListener("click", () => {
+      showScreen("quiz");
+      renderQuestion();
+    });
+
+    document.getElementById("prevBtn").addEventListener("click", () => {
+      if (currentQuestion > 0) {
+        currentQuestion--;
+        renderQuestion();
+      }
+    });
+
+    document.getElementById("nextBtn").addEventListener("click", () => {
+      if (answers[currentQuestion] === null) return;
+      if (currentQuestion < shuffledQuestions.length - 1) {
+        currentQuestion++;
+        renderQuestion();
+      } else {
+        finishQuiz();
+      }
+    });
+
+    document.getElementById("copyBtn").addEventListener("click", copyResult);
+    document.getElementById("shareBtn").addEventListener("click", shareResult);
+    document.getElementById("restartBtn").addEventListener("click", restart);
+
+    document.getElementById("homeHero").innerHTML = renderHero();
+  </script>
+</body>
+</html>
